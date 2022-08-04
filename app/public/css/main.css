@@ -1,0 +1,25 @@
+body{
+    background-color: #EDFBFF;
+    margin: 0;
+}
+
+/* шапка страницы */
+.cap{
+    width: 100%;
+    height: 71px;
+    margin: 0;
+    background-color: #303946;
+    position: absolute;
+    
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+}
+
+.menuButton{
+    width: 41px;
+    height: 31px;
+    margin: 0;
+    background-color: #EDFBFF;
+    cursor: pointer;
+}
