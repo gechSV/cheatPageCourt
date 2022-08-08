@@ -19,7 +19,12 @@ body{
 .menuButton{
     width: 41px;
     height: 31px;
-    margin: 0;
-    background-color: #EDFBFF;
+    margin: auto 0 auto 10%;
+    background: none;
+    border: none;
     cursor: pointer;
+}
+
+.menuButton image{
+    margin: 0;
 }

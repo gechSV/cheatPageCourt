@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,0" last-zoom="1" max-obj-count="4"
+	 default-schema="public" default-owner="postgres">
+<database name="new_database" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" layer="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="card" layer="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="720" y="140"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="JudicialAct">
+		<type name="text" length="0"/>
+		<comment><![CDATA[Судебный акт
+]]></comment>
+	</column>
+	<column name="Duty">
+		<type name="smallint" length="0"/>
+		<comment><![CDATA[Пошлина]]></comment>
+	</column>
+	<column name="AppealPeriod">
+		<type name="text" length="0"/>
+		<comment><![CDATA[Срок обжалования]]></comment>
+	</column>
+	<column name="ReviewPeriod">
+		<type name="text" length="0"/>
+		<comment><![CDATA[Срок рассмотрения]]></comment>
+	</column>
+	<column name="Notes">
+		<type name="text" length="0"/>
+		<comment><![CDATA[Примечания
+]]></comment>
+	</column>
+	<constraint name="card_pk" type="pk-constr" table="public.card">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="articles" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<comment><![CDATA[Статьи]]></comment>
+	<position x="1080" y="180"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="Name">
+		<type name="text" length="0"/>
+		<comment><![CDATA[Название]]></comment>
+	</column>
+	<column name="Link">
+		<type name="text" length="0"/>
+		<comment><![CDATA[Ссылка на сторонний ресурс ]]></comment>
+	</column>
+	<constraint name="articles_pk" type="pk-constr" table="public.articles">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<relationship name="many_card_has_many_articles" type="relnn" layer="0"
+	 src-col-pattern="{sc}_{st}" dst-col-pattern="{sc}_{dt}"
+	 pk-pattern="{gt}_pk" uq-pattern="{gt}_uq"
+	 src-fk-pattern="{st}_fk" dst-fk-pattern="{dt}_fk"
+	 pk-col-pattern="id"
+	 custom-color="#214738"
+	 src-table="public.card"
+	 dst-table="public.articles"
+	 src-required="false" dst-required="false"
+	 table-name="many_card_has_many_articles"/>
+
+<table name="Table" layer="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<comment><![CDATA[Таблицы
+]]></comment>
+	<position x="340" y="180"/>
+	<column name="id" not-null="true">
+		<type name="smallint" length="0"/>
+	</column>
+	<column name="Name">
+		<type name="text" length="0"/>
+		<comment><![CDATA[Название]]></comment>
+	</column>
+	<constraint name="Table_pk" type="pk-constr" table="public.&quot;Table&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<relationship name="Table_has_many_card" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#59905e"
+	 src-table="public.&quot;Table&quot;"
+	 dst-table="public.card"
+	 src-required="false" dst-required="false"/>
+
+</dbmodel>
