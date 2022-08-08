@@ -1,10 +1,28 @@
+
 // Подключение к БД
-const { Sequelize } = require('sequelize')
+const { Promise } = require('sequelize')
+const { Sequelize, json } = require('sequelize')
 
 const sequelize = new Sequelize('cheat_page_court_db', 'root', 'abobaVada2022', {
     host: 'localhost',
     dialect: 'mysql'
 })  
+
+
+//Модель категориий таблиц
+const TableCategory = sequelize.define(
+  'TableCategory',
+  {
+    // Название таблицы
+    Name:{
+      type: Sequelize.STRING
+    },
+    // Описание
+    Descriptions:{
+      type: Sequelize.TEXT
+    }
+  }
+)
 
 
 // Модель карточки данных
@@ -60,11 +78,14 @@ const many_Card_has_many_Articles = sequelize.define(
 Card.hasMany(many_Card_has_many_Articles)
 Article.hasMany(many_Card_has_many_Articles)
 
+// Установка связи между таблицей TableCategory & Card
+TableCategory.hasMany(Card)
+
 /**
  * Синхронизация моделей ORM и таблиц БД 
  */
-function syncModel(){
-  sequelize.sync().then(result=>{
+ function syncModel(){
+  sequelize.sync({force: true}).then(result=>{
     console.log('\033[95mМодели и таблицы БД синхронизированны.\033[0m')
     // console.log(result);
   })
@@ -81,20 +102,51 @@ function syncModel(){
  * @param {*} notes Примечания
  */
 function addCardItem(act, duty, appealPer, reviewPer, notes){
-  Card.create({
-    JudicialAct: act,
-    Duty: duty, 
-    AppealPeriod: appealPer,
-    ReviewPeriod: reviewPer,
-    Notes: notes
-  }).then(result=>{
-    const card = {act:result.JudicialAct, duty:result.Duty, appealPer:result.AppealPeriod,
-                  reviewPer:result.ReviewPeriod,notes:result.Notes}
-    console.log('\033[92m' + card + '\033[0m')//TODO: Починить вывод
-  }).catch(err=>console.log(err));
+    Card.create({
+      JudicialAct: act,
+      Duty: duty, 
+      AppealPeriod: appealPer,
+      ReviewPeriod: reviewPer,
+      Notes: notes
+    }).then(res=>{
+      console.log('\033[92mВ таблтцу \'Card\' добавлена запись\033[0m')
+      console.log(res.dataValues)
+    }).catch(err=>console.log(err))
 }
 
+/**
+ * Добавление строк в таблицу Article
+ * 
+ * @param {*} name Название статьи  
+ * @param {*} link Ссылка на источник
+ */
+function addArticleItem(name, link){
+  Article.create({
+    Name: name, 
+    Link: link
+  }).then(res=>{
+    console.log('\033[92mВ таблтцу \'Article\' добавлена запись\033[0m')
+    console.log(res.dataValues)
+  }).catch(err=>console.log(err))
+}
 
+/**
+ * Добавление строк в таблицу many_Card_has_many_Articles
+ * 
+ * @param {*} cardId id-карточки
+ * @param {*} articleId id-статьи
+ */
+function addManyCardHasManyArticlesItem(cardId, articleId){
+  many_Card_has_many_Articles.create({
+    CardId: cardId,
+    ArticleId: articleId
+  }).then(res=>{
+    console.log('\033[92mВ таблтцу \'many_card_has_many_articles\' добавлена запись\033[0m')
+    console.log(res.dataValues)
+  }).catch(err=>console.log(err))
+}
 
 exports.syncModel = syncModel
 exports.addCardItem = addCardItem
+exports.addArticleItem = addArticleItem
+exports.addManyCardHasManyArticlesItem = addManyCardHasManyArticlesItem

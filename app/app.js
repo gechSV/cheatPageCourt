@@ -23,8 +23,7 @@ app.listen(port, host, function(){
 app.get('/', (req, res) => {
     res.render('main.pug');
     console.log('\033[95mload /\033[0m');
-    //DB.syncModel()
-    DB.addCardItem('Акт', 1000, 'Есть', 'Тоже', 'Боба')
+    //DB.syncModel();
 })
 
 // TODO: сделать log.txt
