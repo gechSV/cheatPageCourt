@@ -115,7 +115,7 @@ body{
     display: flex;
     flex-direction: column;
     position: relative;
-    /* filter: drop-shadow(0px 5px 5px rgba(25, 25, 25, 0.5)); */
+    filter: drop-shadow(0px 5px 5px rgba(25, 25, 25, 0.5));
 }
 
 .titleCard{
@@ -127,7 +127,7 @@ body{
 
 .articleCon{
     margin: 0 auto;
-    width: 98%;
+    width: 100%;
     min-height: 80px;
     position: relative;
     border-top: rgba(127, 161, 210, 0.5) solid 2px;

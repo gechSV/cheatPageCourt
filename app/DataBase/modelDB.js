@@ -1,5 +1,6 @@
 
 // Подключение к БД
+const { raw } = require('express')
 const { Promise } = require('sequelize')
 const { Sequelize, json } = require('sequelize')
 
@@ -71,12 +72,34 @@ const Article = sequelize.define(
 // Для связи многоие ко многим. Связь карточек данных и статей
 const many_Card_has_many_Articles = sequelize.define(
   'many_card_has_many_articles',
-  {}
+  {
+    id: {
+      type: Sequelize.INTEGER,
+      primaryKey: true,
+      allowNull: false,
+      autoIncrement: true,
+      unique: true,
+    },
+    CardId:{
+      type: Sequelize.INTEGER,
+      references: {
+        model: Card,
+        key: Card.id,
+      }
+    },
+    ArticleId:{
+      type: Sequelize.INTEGER,
+      references: {
+        model: Article,
+        key: Article.id,
+      }
+    },
+  }
 )
 
 // Установка внешних ключей для 'many_Card_has_many_Articles'
-Card.hasMany(many_Card_has_many_Articles)
-Article.hasMany(many_Card_has_many_Articles)
+Card.belongsToMany(Article,  {through: 'many_Card_has_many_Articles'})
+Article.belongsToMany(Card, {through: 'many_Card_has_many_Articles'})
 
 // Установка связи между таблицей TableCategory & Card
 TableCategory.hasMany(Card)
@@ -85,15 +108,17 @@ TableCategory.hasMany(Card)
  * Синхронизация моделей ORM и таблиц БД
  */
  function syncModel(){
+  Card.sync()
+  Article.sync()
+  many_Card_has_many_Articles.sync()
 
-  sequelize.sync(/*{force: true}*/).then(result=>{
-    new Date();
-    console.log('11   '+Date.now())
-    console.log('\033[95mМодели и таблицы БД синхронизированны.\033[0m')
-    // console.log(result);
-    return
-  })
-  .catch(err=> console.log(err));
+  // sequelize.sync({force: true}).then(result=>{
+  //   new Date();
+  //   console.log('\033[95mМодели и таблицы БД синхронизированны.\033[0m')
+  //   // console.log(result);
+  //   return
+  // })
+  // .catch(err=> console.log(err));
 }
 
 //
@@ -178,13 +203,44 @@ function addManyCardHasManyArticlesItem(cardId, articleId){
 //####### Запросы данных ####### 
 //
 
+/**
+ * Функция запроса всех карточек для главной страницы 
+ * 
+ * @returns JSON 
+ */
 function getAllCards(){
-  
+  let ret = new Array()
+  return Card.findAll({
+    attributes: ['id','JudicialAct', 'Duty', 'AppealPeriod', 'ReviewPeriod', 'Notes'],
+    include: [Article]
+   })  
+    .then((volume, index) => {
+      for(let i = 0; i < volume.length; i++){
+        ret.push(volume[i].toJSON())
+      } 
+      return ret
+    })
+  }
+
+function getAllArticle(id){
+  return Article.findAll({ 
+    raw: true,
+    where:{
+      id: id,
+    },
+  })
 }
 
 
-
-
+function getMany_Card_has_many_Articles(cardId){
+  return many_Card_has_many_Articles.findAll({
+    raw: true, 
+    where:{
+      CardId: cardId,
+    },
+    attributes: ['ArticleId']
+  })
+}
 
 
 exports.syncModel = syncModel
@@ -192,3 +248,6 @@ exports.addTableCategoryItem = addTableCategoryItem
 exports.addCardItem = addCardItem
 exports.addArticleItem = addArticleItem
 exports.addManyCardHasManyArticlesItem = addManyCardHasManyArticlesItem
+exports.getAllCards = getAllCards
+exports.getAllArticle = getAllArticle
+exports.getMany_Card_has_many_Articles = getMany_Card_has_many_Articles
