@@ -1,7 +1,30 @@
 include navigation
 div(class = 'mainCon')
+        each val in card
+                div(class = 'card') 
+                        div(class = 'titleCard')
+                                img(src="images/iconSVG/voise.svg", alt="устное")
+                                p #{val['JudicialAct']}
+                        div(class = 'articleCon')
+                                each art in val['Articles']
+                                        a(href= art['Link']) #{art['Name']}
+                        div(class = 'other')
+                                div(class = 'otherItem')
+                                        div
+                                                p Пошлина 
+                                        div(class = 'leftBor')
+                                                p #{val['Duty']}
+                                div(class = 'otherItem')
+                                        div
+                                                p Срок обжалования 
+                                        div
+                                                p #{val['AppealPeriod']}
+                                div(class = 'otherItem')
+                                        div
+                                                p Срок рассмотрения 
+                                        div(class = 'rightBor')
+                                                p #{val['ReviewPeriod']}
 
-    div(class = 'card') 
-        div(class = 'titleCard')
-                p #{card[0]['JudicialAct']}
-        div(class = 'articleCon')
+                                
+
+                        

@@ -23,7 +23,7 @@ app.listen(port, host, function(){
 
 app.get('/', function(req, res, next) { 
     var c = DB.getAllCards().then((x) =>{
-        console.log(JSON.parse(JSON.stringify(x)))
+        console.log(x)
         res.render('main.pug', {card: JSON.parse(JSON.stringify(x))})
     })
 })

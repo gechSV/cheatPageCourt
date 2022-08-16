@@ -50,7 +50,8 @@ const Card = sequelize.define(
     // Примечания
     Notes:{
       type: Sequelize.TEXT
-    }
+    },
+    
   }
 )
 
