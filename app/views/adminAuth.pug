@@ -1,0 +1,12 @@
+include adminHeader.pug
+div(class = 'loginCon')
+    form(action = '/auth' id = 'authId' method = 'POST' class = 'logForm')
+        p login
+        input(type = 'login' id = 'login')
+        p password
+        input(type = 'password' id = 'password')
+        input(type = 'submit')
+
+
+
+script(src="js/login.js" type='text/javascript')

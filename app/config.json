@@ -1,0 +1,11 @@
+{
+    "ServerCfg": {
+        "host": "127.0.0.1",
+        "port": 8000
+    },
+    "safety": {
+        "JWTKey": "Hello",
+        "PasswordHashSalt": 10,
+        "tokenLifetime": "1h"
+    }
+}

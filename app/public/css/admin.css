@@ -1,0 +1,21 @@
+body{
+    background: #191919;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.loginCon{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.loginCon form{
+    height: 300px;
+    width: 300px;
+    background: #123451;
+}
